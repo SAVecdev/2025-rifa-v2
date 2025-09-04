@@ -36,6 +36,27 @@ cd rifas-web
 npm install
 ```
 
+**⚠️ Nota**: Este comando instalará automáticamente todas las dependencias necesarias listadas en `package.json`:
+
+#### Dependencias de Producción:
+- **express** - Framework web para Node.js
+- **ejs** - Motor de plantillas
+- **mysql2** - Conector de base de datos MySQL
+- **socket.io** - Comunicación en tiempo real
+- **bcryptjs** - Encriptación de contraseñas
+- **express-session** - Gestión de sesiones
+- **connect-flash** - Mensajes flash
+- **dotenv** - Variables de entorno
+- **chart.js** - Gráficos interactivos
+- **tailwindcss** - Framework CSS
+- **@tailwindcss/cli** - CLI de Tailwind
+- **@material-tailwind/html** - Componentes adicionales
+
+#### Dependencias de Desarrollo:
+- **nodemon** - Auto-recarga del servidor en desarrollo
+
+**No necesitas instalar nada manualmente**, `npm install` se encarga de todo.
+
 ### 3. Configurar Base de Datos
 
 #### Crear la Base de Datos
