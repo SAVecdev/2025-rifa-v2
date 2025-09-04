@@ -1,0 +1,156 @@
+<nav class="bg-slate-700 border-b border-slate-600 md:block hidden" id="navbar">
+    <div class="container-custom">
+        <ul class="flex space-x-1" id="navMenu">
+            <li>
+                <a href="/" class="nav-link <%= page === 'home' ? 'active' : '' %>">
+                    <i class="fas fa-home mr-2"></i>
+                    <span>Inicio</span>
+                </a>
+            </li>
+            <li>
+                <a href="/rifas" class="nav-link <%= page === 'rifas' ? 'active' : '' %>">
+                    <i class="fas fa-ticket-alt mr-2"></i>
+                    <span>Rifas</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about" class="nav-link <%= page === 'about' ? 'active' : '' %>">
+                    <i class="fas fa-info-circle mr-2"></i>
+                    <span>Acerca de</span>
+                </a>
+            </li>
+            <li>
+                <a href="/contact" class="nav-link <%= page === 'contact' ? 'active' : '' %>">
+                    <i class="fas fa-envelope mr-2"></i>
+                    <span>Contacto</span>
+                </a>
+            </li>
+            
+            <!-- Opciones de usuario autenticado -->
+            <% if (user) { %>
+                <li>
+                    <a href="/profile" class="nav-link <%= page === 'profile' ? 'active' : '' %>">
+                        <i class="fas fa-user mr-2"></i>
+                        <span>Perfil</span>
+                    </a>
+                </li>
+                <% if (user.role === 'administrador') { %>
+                    <li>
+                        <a href="/admin" class="nav-link <%= page === 'admin' ? 'active' : '' %>">
+                            <i class="fas fa-cog mr-2"></i>
+                            <span>Admin</span>
+                        </a>
+                    </li>
+                <% } %>
+                <li>
+                    <form action="/logout" method="POST" class="inline">
+                        <button type="submit" class="nav-link text-red-400 hover:text-red-300 hover:bg-red-500/10">
+                            <i class="fas fa-sign-out-alt mr-2"></i>
+                            <span>Salir</span>
+                        </button>
+                    </form>
+                </li>
+            <% } else { %>
+                <li>
+                    <a href="/login" class="nav-link <%= page === 'login' ? 'active' : '' %>">
+                        <i class="fas fa-sign-in-alt mr-2"></i>
+                        <span>Login</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/register" class="nav-link <%= page === 'register' ? 'active' : '' %>">
+                        <i class="fas fa-user-plus mr-2"></i>
+                        <span>Registro</span>
+                    </a>
+                </li>
+            <% } %>
+        </ul>
+    </div>
+</nav>
+
+<!-- Menú móvil -->
+<nav class="md:hidden fixed inset-0 z-40 transform -translate-x-full transition-transform duration-300 ease-in-out bg-slate-900/95 backdrop-blur-sm" id="mobileMenu">
+    <div class="flex flex-col h-full pt-20 px-6">
+        <ul class="space-y-4">
+            <li>
+                <a href="/" class="nav-link text-lg <%= page === 'home' ? 'active' : '' %>">
+                    <i class="fas fa-home mr-3"></i>
+                    <span>Inicio</span>
+                </a>
+            </li>
+            <li>
+                <a href="/rifas" class="nav-link text-lg <%= page === 'rifas' ? 'active' : '' %>">
+                    <i class="fas fa-ticket-alt mr-3"></i>
+                    <span>Rifas</span>
+                </a>
+            </li>
+            <li>
+                <a href="/about" class="nav-link text-lg <%= page === 'about' ? 'active' : '' %>">
+                    <i class="fas fa-info-circle mr-3"></i>
+                    <span>Acerca de</span>
+                </a>
+            </li>
+            <li>
+                <a href="/contact" class="nav-link text-lg <%= page === 'contact' ? 'active' : '' %>">
+                    <i class="fas fa-envelope mr-3"></i>
+                    <span>Contacto</span>
+                </a>
+            </li>
+            
+            <!-- Opciones de usuario móvil -->
+            <% if (user) { %>
+                <li>
+                    <a href="/profile" class="nav-link text-lg <%= page === 'profile' ? 'active' : '' %>">
+                        <i class="fas fa-user mr-3"></i>
+                        <span>Perfil</span>
+                    </a>
+                </li>
+                <% if (user.role === 'administrador') { %>
+                    <li>
+                        <a href="/admin" class="nav-link text-lg <%= page === 'admin' ? 'active' : '' %>">
+                            <i class="fas fa-cog mr-3"></i>
+                            <span>Admin</span>
+                        </a>
+                    </li>
+                <% } %>
+            <% } else { %>
+                <li>
+                    <a href="/login" class="nav-link text-lg <%= page === 'login' ? 'active' : '' %>">
+                        <i class="fas fa-sign-in-alt mr-3"></i>
+                        <span>Login</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/register" class="nav-link text-lg <%= page === 'register' ? 'active' : '' %>">
+                        <i class="fas fa-user-plus mr-3"></i>
+                        <span>Registro</span>
+                    </a>
+                </li>
+            <% } %>
+        </ul>
+        <div class="mt-8">
+            <% if (user) { %>
+                <div class="bg-slate-800 rounded-lg p-4 mb-4">
+                    <div class="flex items-center space-x-3">
+                        <img src="<%= user.avatar %>" alt="<%= user.name %>" class="w-10 h-10 rounded-full">
+                        <div>
+                            <p class="text-white font-medium"><%= user.name %></p>
+                            <p class="text-slate-400 text-sm"><%= user.email %></p>
+                        </div>
+                    </div>
+                </div>
+                <form action="/logout" method="POST">
+                    <button type="submit" class="btn btn-primary btn-full bg-red-600 hover:bg-red-700">
+                        <i class="fas fa-sign-out-alt mr-2"></i>
+                        Cerrar Sesión
+                    </button>
+                </form>
+            <% } else { %>
+                <a href="/login" class="btn btn-primary btn-full">
+                    <i class="fas fa-sign-in-alt mr-2"></i>
+                    Iniciar Sesión
+                </a>
+            <% } %>
+        </div>
+    </div>
+</nav>

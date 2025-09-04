@@ -1,0 +1,350 @@
+<!-- Botón de toggle para móvil -->
+<button id="sidebarToggle" class="lg:hidden fixed top-4 left-4 z-50 p-3 bg-slate-800 text-white rounded-lg shadow-lg hover:bg-slate-700 transition-all duration-200 border border-slate-600">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+    </svg>
+</button>
+
+<!-- Overlay para cerrar sidebar en móvil -->
+<div id="sidebarOverlay" class="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-30 hidden"></div>
+
+<!-- Sidebar -->
+<aside id="sidebar" class="fixed top-0 left-0 h-full bg-slate-800 shadow-xl z-40 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out w-64">
+    <!-- Header del sidebar -->
+    <div class="flex items-center justify-between p-6 border-b border-slate-700">
+        <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                <i class="fas fa-dice text-white text-sm"></i>
+            </div>
+            <h2 class="text-xl font-bold text-white">Rifas</h2>
+        </div>
+        <!-- Botón cerrar para móvil -->
+        <button id="sidebarClose" class="lg:hidden text-slate-400 hover:text-white">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Información del usuario -->
+    <% if (user) { %>
+        <div class="p-6 border-b border-slate-700">
+            <div class="flex items-center space-x-3">
+                <img src="<%= user.avatar %>" alt="<%= user.name %>" class="w-12 h-12 rounded-full border-2 border-slate-600">
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-white truncate"><%= user.name %></p>
+                    <p class="text-xs text-slate-400 truncate"><%= user.email %></p>
+                    <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium 
+                        <%= user.role === 'administrador' ? 'bg-red-900 text-red-200' : 
+                            user.role === 'supervisor' ? 'bg-yellow-900 text-yellow-200' : 
+                            'bg-green-900 text-green-200' %>">
+                        <%= user.role === 'administrador' ? 'Admin' : 
+                            user.role === 'supervisor' ? 'Supervisor' : 
+                            'Vendedor' %>
+                    </span>
+                </div>
+            </div>
+        </div>
+    <% } %>
+
+    <!-- Navegación principal -->
+    <nav class="flex-1 p-4">
+        <ul class="space-y-2">
+            <!-- Dashboard / Inicio -->
+            <li>
+                <a href="/" class="sidebar-link <%= page === 'home' ? 'active' : '' %>">
+                    <i class="fas fa-home w-5 h-5"></i>
+                    <span>Inicio</span>
+                </a>
+            </li>
+
+            <!-- Rifas -->
+            <li>
+                <a href="/rifas" class="sidebar-link <%= page === 'rifas' ? 'active' : '' %>">
+                    <i class="fas fa-ticket-alt w-5 h-5"></i>
+                    <span>Rifas</span>
+                </a>
+            </li>
+
+            <!-- Solo para usuarios autenticados -->
+            <% if (user) { %>
+                <!-- Mi Perfil -->
+                <li>
+                    <a href="/profile" class="sidebar-link <%= page === 'profile' ? 'active' : '' %>">
+                        <i class="fas fa-user w-5 h-5"></i>
+                        <span>Mi Perfil</span>
+                    </a>
+                </li>
+
+                <!-- Mis Compras -->
+                <li>
+                    <a href="/mis-compras" class="sidebar-link <%= page === 'mis-compras' ? 'active' : '' %>">
+                        <i class="fas fa-shopping-bag w-5 h-5"></i>
+                        <span>Mis Compras</span>
+                    </a>
+                </li>
+
+                <!-- Solo para supervisor y admin -->
+                <% if (user.role === 'supervisor' || user.role === 'administrador') { %>
+                    <!-- Separador -->
+                    <li class="pt-4">
+                        <div class="border-t border-slate-700 mb-4"></div>
+                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-3">Gestión</p>
+                    </li>
+
+                    <!-- Gestión de Rifas -->
+                    <li>
+                        <a href="/admin/rifas" class="sidebar-link <%= page === 'admin-rifas' ? 'active' : '' %>">
+                            <i class="fas fa-cogs w-5 h-5"></i>
+                            <span>Gestionar Rifas</span>
+                        </a>
+                    </li>
+
+                    <!-- Ventas -->
+                    <li>
+                        <a href="/admin/ventas" class="sidebar-link <%= page === 'admin-ventas' ? 'active' : '' %>">
+                            <i class="fas fa-chart-line w-5 h-5"></i>
+                            <span>Ventas</span>
+                        </a>
+                    </li>
+                <% } %>
+
+                <!-- Solo para administrador -->
+                <% if (user.role === 'administrador') { %>
+                    <!-- Usuarios -->
+                    <li>
+                        <a href="/admin/usuarios" class="sidebar-link <%= page === 'admin-usuarios' ? 'active' : '' %>">
+                            <i class="fas fa-users w-5 h-5"></i>
+                            <span>Usuarios</span>
+                        </a>
+                    </li>
+
+                    <!-- Reportes -->
+                    <li>
+                        <a href="/admin/reportes" class="sidebar-link <%= page === 'admin-reportes' ? 'active' : '' %>">
+                            <i class="fas fa-chart-bar w-5 h-5"></i>
+                            <span>Reportes</span>
+                        </a>
+                    </li>
+
+                    <!-- Configuración -->
+                    <li>
+                        <a href="/admin/config" class="sidebar-link <%= page === 'admin-config' ? 'active' : '' %>">
+                            <i class="fas fa-cog w-5 h-5"></i>
+                            <span>Configuración</span>
+                        </a>
+                    </li>
+                <% } %>
+            <% } %>
+
+            <!-- Separador -->
+            <li class="pt-4">
+                <div class="border-t border-slate-700 mb-4"></div>
+            </li>
+
+            <!-- Información -->
+            <li>
+                <a href="/about" class="sidebar-link <%= page === 'about' ? 'active' : '' %>">
+                    <i class="fas fa-info-circle w-5 h-5"></i>
+                    <span>Acerca de</span>
+                </a>
+            </li>
+
+            <!-- Contacto -->
+            <li>
+                <a href="/contact" class="sidebar-link <%= page === 'contact' ? 'active' : '' %>">
+                    <i class="fas fa-envelope w-5 h-5"></i>
+                    <span>Contacto</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Footer del sidebar -->
+    <div class="p-4 border-t border-slate-700">
+        <% if (user) { %>
+            <!-- Cerrar sesión -->
+            <form action="/logout" method="POST" class="w-full">
+                <button type="submit" class="w-full flex items-center space-x-3 px-3 py-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors">
+                    <i class="fas fa-sign-out-alt w-5 h-5"></i>
+                    <span>Cerrar Sesión</span>
+                </button>
+            </form>
+        <% } else { %>
+            <!-- Login y Registro -->
+            <div class="space-y-2">
+                <a href="/login" class="sidebar-link">
+                    <i class="fas fa-sign-in-alt w-5 h-5"></i>
+                    <span>Iniciar Sesión</span>
+                </a>
+                <a href="/register" class="sidebar-link">
+                    <i class="fas fa-user-plus w-5 h-5"></i>
+                    <span>Registrarse</span>
+                </a>
+            </div>
+        <% } %>
+    </div>
+</aside>
+
+<!-- Estilos CSS para el sidebar -->
+<style>
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    color: rgb(203 213 225);
+    transition: all 0.2s;
+    border-radius: 0.5rem;
+    text-decoration: none;
+}
+
+.sidebar-link:hover {
+    color: rgb(255 255 255);
+    background-color: rgb(51 65 85);
+}
+
+.sidebar-link.active {
+    background-color: rgb(37 99 235);
+    color: rgb(255 255 255);
+}
+
+.sidebar-link.active:hover {
+    background-color: rgb(29 78 216);
+}
+
+/* Responsive behavior */
+@media (max-width: 1023px) {
+    #sidebar.open {
+        transform: translateX(0);
+    }
+}
+
+/* Animation for icons */
+.sidebar-link i {
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+/* Sidebar transform */
+#sidebar {
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Botón toggle */
+#sidebarToggle {
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+#sidebarToggle:hover {
+    transform: scale(1.05);
+}
+
+/* Overlay */
+#sidebarOverlay {
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Animación del overlay */
+#sidebarOverlay:not(.hidden) {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+</style>
+
+<!-- JavaScript para el sidebar responsive -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarClose = document.getElementById('sidebarClose');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    // Toggle sidebar
+    function toggleSidebar() {
+        const isOpen = sidebar.classList.contains('open');
+        
+        if (isOpen) {
+            closeSidebar();
+        } else {
+            openSidebar();
+        }
+    }
+
+    // Abrir sidebar
+    function openSidebar() {
+        sidebar.classList.add('open');
+        sidebar.classList.remove('-translate-x-full');
+        sidebarOverlay.classList.remove('hidden');
+        sidebarToggle.style.display = 'none'; // Ocultar el botón
+        document.body.classList.add('overflow-hidden');
+    }
+
+    // Cerrar sidebar
+    function closeSidebar() {
+        sidebar.classList.remove('open');
+        sidebar.classList.add('-translate-x-full');
+        sidebarOverlay.classList.add('hidden');
+        // Solo mostrar el botón en móvil, no forzar display en desktop
+        if (window.innerWidth < 1024) {
+            sidebarToggle.style.display = 'block';
+        }
+        document.body.classList.remove('overflow-hidden');
+    }
+
+    // Event listeners
+    sidebarToggle.addEventListener('click', toggleSidebar);
+    sidebarClose.addEventListener('click', closeSidebar);
+    sidebarOverlay.addEventListener('click', closeSidebar);
+
+    // Cerrar sidebar al hacer click en un enlace (en móvil)
+    if (window.innerWidth < 1024) {
+        const sidebarLinks = sidebar.querySelectorAll('.sidebar-link');
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', closeSidebar);
+        });
+    }
+
+    // Manejar resize de ventana
+    window.addEventListener('resize', function() {
+        if (window.innerWidth >= 1024) {
+            // En desktop, resetear estados y quitar cualquier style inline
+            closeSidebar();
+            sidebarToggle.style.display = ''; // Limpiar style inline, dejar que CSS controle
+        } else {
+            // En móvil, asegurar que el botón esté visible si el sidebar está cerrado
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebarToggle.style.display = 'block';
+            }
+        }
+    });
+
+    // Cerrar sidebar con tecla ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && sidebar.classList.contains('open')) {
+            closeSidebar();
+        }
+    });
+
+    // Inicializar estado del botón según el tamaño de pantalla
+    function initializeButtonState() {
+        if (window.innerWidth >= 1024) {
+            // En desktop, limpiar cualquier style inline y dejar que las clases CSS controlen
+            sidebarToggle.style.display = '';
+        } else {
+            // En móvil, mostrar el botón si el sidebar está cerrado
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebarToggle.style.display = 'block';
+            }
+        }
+    }
+
+    // Inicializar
+    initializeButtonState();
+});
+</script>

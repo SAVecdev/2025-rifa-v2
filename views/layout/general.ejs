@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/output.css">
+    <link rel="stylesheet" href="/css/socket-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <meta name="description" content="<%= typeof description !== 'undefined' ? description : 'Sistema de rifas online' %>">
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen">
+    <!-- Sidebar Menu -->
+    <%- include('../partials/asidebarmenu') %>
+    
+    <!-- Contenido principal -->
+    <main class="lg:ml-64 min-h-screen">
+        <!-- Header superior (opcional) -->
+        <header class="bg-slate-800 shadow-sm p-4 lg:p-6">
+            <div class="flex items-center justify-between">
+                <div class="lg:hidden"></div> <!-- Espacio para el botón del sidebar -->
+                <h1 class="text-xl lg:text-2xl font-semibold text-white">
+                    <%= typeof pageTitle !== 'undefined' ? pageTitle : title %>
+                </h1>
+                
+                <!-- Breadcrumbs o información adicional -->
+                <div class="hidden lg:flex items-center space-x-4 text-sm text-slate-400">
+                    <% if (user) { %>
+                        <span>Bienvenido, <%= user.name %></span>
+                        <span class="w-1 h-1 bg-slate-600 rounded-full"></span>
+                        <span><%= user.role.charAt(0).toUpperCase() + user.role.slice(1) %></span>
+                    <% } else { %>
+                        <span>Invitado</span>
+                    <% } %>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Mensajes Flash -->
+        <% if (messages.success && messages.success.length > 0) { %>
+            <div class="mx-4 lg:mx-6 mt-4">
+                <div class="bg-green-500 bg-opacity-20 border-l-4 border-green-500 text-green-200 p-4 rounded">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <%= messages.success[0] %>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+        
+        <% if (messages.error && messages.error.length > 0) { %>
+            <div class="mx-4 lg:mx-6 mt-4">
+                <div class="bg-red-500 bg-opacity-20 border-l-4 border-red-500 text-red-200 p-4 rounded">
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-circle mr-2"></i>
+                        <%= messages.error[0] %>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+        
+        <!-- Contenido de la página -->
+        <div class="p-4 lg:p-6">
+            <%- body %>
+        </div>
+    </main>
+
+    <!-- Contenedor para notificaciones -->
+    <div id="notifications-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <!-- Indicador de conexión Socket.IO -->
+    <div id="socket-status" class="fixed bottom-4 right-4 z-40">
+        <div class="flex items-center bg-slate-800 border border-slate-600 rounded-lg px-3 py-2 text-sm">
+            <div id="connection-dot" class="w-2 h-2 rounded-full mr-2 bg-red-500"></div>
+            <span id="connection-text" class="text-slate-300">Desconectado</span>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/chart.min.js"></script>
+    <script src="/js/adminCharts.js"></script>
+    
+    <!-- Socket.IO Client Script -->
+    <script>
+        // Inicializar Socket.IO
+        const socket = io();
+        
+        // Variables globales para el estado de Socket.IO
+        window.socketConnected = false;
+        window.socketInstance = socket;
+        
+        // Referencias a elementos del DOM
+        const connectionDot = document.getElementById('connection-dot');
+        const connectionText = document.getElementById('connection-text');
+        const notificationsContainer = document.getElementById('notifications-container');
+        
+        // Eventos de conexión
+        socket.on('connect', function() {
+            console.log('🔗 Conectado al servidor Socket.IO');
+            window.socketConnected = true;
+            updateConnectionStatus(true);
+            
+            <% if (user) { %>
+                // Unirse a la sala correspondiente según el rol del usuario
+                const userRole = '<%= user.role %>';
+                socket.emit('join-role', userRole);
+                console.log(`🏠 Se unió a la sala: ${userRole}`);
+            <% } %>
+        });
+        
+        socket.on('disconnect', function() {
+            console.log('❌ Desconectado del servidor Socket.IO');
+            window.socketConnected = false;
+            updateConnectionStatus(false);
+        });
+        
+        socket.on('reconnect', function() {
+            console.log('🔄 Reconectado al servidor Socket.IO');
+            showNotification('success', 'Conexión restablecida');
+        });
+        
+        socket.on('connect_error', function(error) {
+            console.error('❌ Error de conexión Socket.IO:', error);
+            updateConnectionStatus(false);
+            showNotification('error', 'Error de conexión en tiempo real');
+        });
+        
+        // Función para actualizar el estado de conexión
+        function updateConnectionStatus(connected) {
+            if (connected) {
+                connectionDot.className = 'w-2 h-2 rounded-full mr-2 bg-green-500 animate-pulse';
+                connectionText.textContent = 'Conectado';
+            } else {
+                connectionDot.className = 'w-2 h-2 rounded-full mr-2 bg-red-500';
+                connectionText.textContent = 'Desconectado';
+            }
+        }
+        
+        // Sistema de notificaciones en tiempo real
+        function showNotification(type, message, duration = 5000) {
+            const notification = document.createElement('div');
+            notification.className = `notification transform transition-all duration-300 translate-x-full opacity-0`;
+            
+            const colors = {
+                'success': 'bg-green-600 border-green-500',
+                'error': 'bg-red-600 border-red-500', 
+                'warning': 'bg-yellow-600 border-yellow-500',
+                'info': 'bg-blue-600 border-blue-500'
+            };
+            
+            const icons = {
+                'success': 'fa-check-circle',
+                'error': 'fa-exclamation-circle',
+                'warning': 'fa-exclamation-triangle', 
+                'info': 'fa-info-circle'
+            };
+            
+            notification.innerHTML = `
+                <div class="flex items-center p-4 border-l-4 ${colors[type]} text-white rounded-lg shadow-lg max-w-sm">
+                    <i class="fas ${icons[type]} mr-3"></i>
+                    <div class="flex-1">
+                        <p class="font-medium">${message}</p>
+                    </div>
+                    <button onclick="closeNotification(this)" class="ml-3 text-white hover:text-gray-200">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            notificationsContainer.appendChild(notification);
+            
+            // Animar entrada
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full', 'opacity-0');
+            }, 100);
+            
+            // Auto-remover después del tiempo especificado
+            if (duration > 0) {
+                setTimeout(() => {
+                    closeNotification(notification.querySelector('button'));
+                }, duration);
+            }
+        }
+        
+        // Función para cerrar notificaciones
+        function closeNotification(button) {
+            const notification = button.closest('.notification');
+            notification.classList.add('translate-x-full', 'opacity-0');
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }
+        
+        <% if (user) { %>
+            // Eventos específicos por rol
+            <% if (user.role === 'administrador') { %>
+                // Eventos para administradores
+                socket.on('admin:usuario-creado', function(data) {
+                    console.log('👤 Nuevo usuario creado:', data);
+                    showNotification('success', `Nuevo usuario: ${data.user.name}`);
+                    
+                    // Actualizar estadísticas si existe la función
+                    if (typeof updateAdminStats === 'function') {
+                        updateAdminStats();
+                    }
+                });
+                
+                socket.on('admin:nueva-venta', function(data) {
+                    console.log('💰 Nueva venta registrada:', data);
+                    showNotification('info', `Nueva venta: $${data.venta.total} - ${data.venta.cliente_nombre}`);
+                    
+                    // Actualizar gráficos si existe la función
+                    if (typeof updateSalesChart === 'function') {
+                        updateSalesChart();
+                    }
+                });
+                
+                socket.on('admin:sistema-alerta', function(data) {
+                    console.log('⚠️ Alerta del sistema:', data);
+                    showNotification('warning', data.message);
+                });
+                
+            <% } else if (user.role === 'supervisor') { %>
+                // Eventos para supervisores
+                socket.on('supervisor:nueva-rifa', function(data) {
+                    console.log('🎁 Nueva rifa creada:', data);
+                    showNotification('success', `Nueva rifa: ${data.rifa.titulo}`);
+                });
+                
+                socket.on('supervisor:venta-vendedor', function(data) {
+                    console.log('📊 Venta de vendedor:', data);
+                    showNotification('info', `Venta realizada por ${data.vendedor.name}: $${data.venta.total}`);
+                });
+                
+            <% } else if (user.role === 'vendedor') { %>
+                // Eventos para vendedores
+                socket.on('vendedor:nueva-rifa-disponible', function(data) {
+                    console.log('🎯 Nueva rifa disponible:', data);
+                    showNotification('info', `Nueva rifa disponible: ${data.rifa.titulo}`);
+                });
+                
+                socket.on('vendedor:comision-actualizada', function(data) {
+                    console.log('💵 Comisión actualizada:', data);
+                    showNotification('success', `Comisión actualizada: $${data.comision}`);
+                });
+                
+            <% } %>
+        <% } %>
+        
+        // Eventos globales para todos los usuarios
+        socket.on('sistema:mantenimiento', function(data) {
+            console.log('🔧 Mantenimiento del sistema:', data);
+            showNotification('warning', `Mantenimiento programado: ${data.message}`, 10000);
+        });
+        
+        socket.on('sistema:actualizacion', function(data) {
+            console.log('🆕 Actualización disponible:', data);
+            showNotification('info', 'Nueva actualización disponible. Recarga la página.', 8000);
+        });
+        
+        // Función global para emitir eventos desde cualquier página
+        window.emitSocketEvent = function(event, data) {
+            if (window.socketConnected) {
+                socket.emit(event, data);
+            } else {
+                console.warn('⚠️ No se puede emitir evento, Socket.IO no está conectado');
+            }
+        };
+        
+        // Función global para obtener el estado de la conexión
+        window.getSocketStatus = function() {
+            return {
+                connected: window.socketConnected,
+                socket: socket
+            };
+        };
+        
+        console.log('🚀 Socket.IO Client inicializado');
+    </script>
+</body>
+</html>

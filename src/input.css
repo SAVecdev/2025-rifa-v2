@@ -1,0 +1,178 @@
+@import "tailwindcss";
+
+/* Estilos base personalizados */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-slate-900 text-gray-100 font-sans;
+  }
+}
+
+/* Componentes personalizados */
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  
+  .btn-primary {
+    @apply bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 hover:shadow-xl hover:-translate-y-0.5 focus:ring-indigo-500;
+  }
+  
+  .btn-secondary {
+    @apply bg-slate-700 text-gray-200 border-slate-600 hover:bg-slate-600 hover:shadow-lg focus:ring-slate-500;
+  }
+  
+  .btn-outline {
+    @apply bg-transparent border-2 border-indigo-500 text-indigo-400 hover:bg-indigo-500 hover:text-white focus:ring-indigo-500;
+  }
+  
+  .btn-large {
+    @apply px-8 py-4 text-lg;
+  }
+  
+  .btn-full {
+    @apply w-full;
+  }
+  
+  .card {
+    @apply bg-slate-800 rounded-xl shadow-2xl border border-slate-700 overflow-hidden transition-all duration-300 hover:-translate-y-1;
+  }
+  
+  .card-header {
+    @apply p-6 border-b border-slate-700;
+  }
+  
+  .card-body {
+    @apply p-6;
+  }
+  
+  .card-footer {
+    @apply p-6 border-t border-slate-700;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200;
+  }
+  
+  .nav-link {
+    @apply flex items-center px-4 py-3 text-gray-300 hover:text-white hover:bg-slate-700 rounded-lg transition-all duration-200;
+  }
+  
+  .nav-link.active {
+    @apply bg-indigo-600 text-white;
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent;
+  }
+  
+  .section-padding {
+    @apply py-16 px-4;
+  }
+  
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+}
+
+/* Utilidades personalizadas */
+@layer utilities {
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  .text-shadow-lg {
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  }
+  
+  .glow-indigo {
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+  }
+  
+  .glow-purple {
+    box-shadow: 0 0 20px rgba(147, 51, 234, 0.3);
+  }
+}
+
+/* Animaciones personalizadas */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.6s ease-out;
+}
+
+/* Estilos para elementos específicos */
+.progress-bar {
+  @apply bg-slate-600 rounded-full h-3 overflow-hidden;
+}
+
+.progress-fill {
+  @apply h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full transition-all duration-1000 ease-out;
+}
+
+.social-link {
+  @apply w-10 h-10 bg-slate-700 hover:bg-indigo-600 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-all duration-300;
+}
+
+.notification {
+  @apply fixed top-4 right-4 max-w-sm p-4 rounded-lg shadow-2xl z-50;
+  animation: slideUp 0.6s ease-out;
+}
+
+.notification-success {
+  @apply bg-emerald-800 border border-emerald-700 text-emerald-100;
+}
+
+.notification-error {
+  @apply bg-red-800 border border-red-700 text-red-100;
+}
+
+.notification-info {
+  @apply bg-blue-800 border border-blue-700 text-blue-100;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .btn {
+    @apply px-4 py-2 text-sm;
+  }
+  
+  .btn-large {
+    @apply px-6 py-3 text-base;
+  }
+  
+  .section-padding {
+    @apply py-12 px-4;
+  }
+  
+  .container-custom {
+    @apply px-4;
+  }
+}

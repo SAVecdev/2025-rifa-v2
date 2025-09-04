@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/output.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex items-center justify-center">
+    <!-- Layout limpio para páginas de error -->
+    <div class="text-center">
+        <div class="mb-8">
+            <i class="fas fa-exclamation-triangle text-yellow-400 text-6xl mb-4"></i>
+            <h1 class="text-4xl font-bold text-white mb-2"><%= title %></h1>
+            <p class="text-slate-400 text-lg">
+                <%= typeof message !== 'undefined' ? message : 'Ha ocurrido un error inesperado' %>
+            </p>
+        </div>
+        
+        <!-- Contenido principal -->
+        <main class="mb-8">
+            <%- body %>
+        </main>
+        
+        <!-- Acciones -->
+        <div class="space-x-4">
+            <a href="/" class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
+                <i class="fas fa-home mr-2"></i>
+                Ir al inicio
+            </a>
+            <button onclick="history.back()" class="inline-flex items-center px-6 py-3 bg-slate-600 hover:bg-slate-700 text-white rounded-lg transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i>
+                Volver atrás
+            </button>
+        </div>
+    </div>
+</body>
+</html>

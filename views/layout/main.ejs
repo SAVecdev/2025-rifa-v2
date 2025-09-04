@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/output.css">
+    <link rel="stylesheet" href="/css/socket-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta name="description" content="<%= typeof description !== 'undefined' ? description : 'Sistema de rifas online' %>">
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen">
+    <!-- Header -->
+    <%- include('../partials/header') %>
+    
+    <!-- Menu de navegación -->
+    <%- include('../partials/menu') %>
+    
+    <!-- Mensajes Flash -->
+    <% if (messages.success && messages.success.length > 0) { %>
+        <div class="bg-green-500 bg-opacity-20 border-l-4 border-green-500 text-green-200 p-4 mx-4 mt-4 rounded">
+            <div class="flex items-center">
+                <i class="fas fa-check-circle mr-2"></i>
+                <%= messages.success[0] %>
+            </div>
+        </div>
+    <% } %>
+    
+    <% if (messages.error && messages.error.length > 0) { %>
+        <div class="bg-red-500 bg-opacity-20 border-l-4 border-red-500 text-red-200 p-4 mx-4 mt-4 rounded">
+            <div class="flex items-center">
+                <i class="fas fa-exclamation-circle mr-2"></i>
+                <%= messages.error[0] %>
+            </div>
+        </div>
+    <% } %>
+    
+    <!-- Contenido principal -->
+    <main class="min-h-screen pt-20">
+        <%- body %>
+    </main>
+    
+    <!-- Footer -->
+    <%- include('../partials/footer') %>
+    
+    <!-- Indicador de conexión Socket.IO -->
+    <div id="connection-status" class="fixed bottom-4 right-4 px-3 py-1 rounded-full text-xs font-medium bg-slate-700 text-slate-300">
+        <i class="fas fa-circle mr-1"></i>
+        <span>Conectando...</span>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/socketClient.js"></script>
+    <script src="/js/main.js"></script>
+    
+    <!-- Inicializar Socket.IO si el usuario está autenticado -->
+    <% if (user) { %>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicializar cliente Socket.IO
+            const socketClient = new SocketClient();
+            socketClient.init('<%= user.role %>', '<%= user.username %>', '<%= user.id %>');
+            
+            // Hacer disponible globalmente
+            window.socketClient = socketClient;
+            
+            console.log('🚀 Sistema de tiempo real iniciado para <%= user.role %>');
+        });
+    </script>
+    <% } %>
+</body>
+</html>

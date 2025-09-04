@@ -1,0 +1,200 @@
+<!-- Dashboard de Vendedor -->
+<div id="vendedor-dashboard" class="min-h-screen bg-slate-900 text-white p-4">
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-blue-400 mb-2">Panel de Ventas</h1>
+        <p class="text-slate-300">Bienvenido <%= user.name %>, gestiona tus ventas y comisiones aquí</p>
+    </div>
+
+    <!-- Tarjetas de estadísticas -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-slate-800 rounded-lg p-6 border border-slate-700">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-slate-400 text-sm">Ventas Hoy</p>
+                    <p id="ventas-hoy" class="text-2xl font-bold text-green-400">0</p>
+                </div>
+                <i class="fas fa-chart-line text-green-400 text-2xl"></i>
+            </div>
+        </div>
+        
+        <div class="bg-slate-800 rounded-lg p-6 border border-slate-700">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-slate-400 text-sm">Comisión Hoy</p>
+                    <p id="comision-hoy" class="text-2xl font-bold text-blue-400">$0</p>
+                </div>
+                <i class="fas fa-dollar-sign text-blue-400 text-2xl"></i>
+            </div>
+        </div>
+        
+        <div class="bg-slate-800 rounded-lg p-6 border border-slate-700">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-slate-400 text-sm">Boletos Vendidos</p>
+                    <p id="boletos-vendidos" class="text-2xl font-bold text-purple-400">0</p>
+                </div>
+                <i class="fas fa-ticket-alt text-purple-400 text-2xl"></i>
+            </div>
+        </div>
+        
+        <div class="bg-slate-800 rounded-lg p-6 border border-slate-700">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-slate-400 text-sm">Rifas Activas</p>
+                    <p id="rifas-activas" class="text-2xl font-bold text-yellow-400">0</p>
+                </div>
+                <i class="fas fa-gift text-yellow-400 text-2xl"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Acciones rápidas -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <a href="/vendedor/rifas" class="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-lg p-6 text-center transition-all duration-300 transform hover:scale-105">
+            <i class="fas fa-shopping-cart text-3xl mb-4"></i>
+            <h3 class="text-xl font-semibold mb-2">Vender Boletos</h3>
+            <p class="text-blue-100">Ver rifas disponibles para vender</p>
+        </a>
+        
+        <a href="/vendedor/mis-ventas" class="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 rounded-lg p-6 text-center transition-all duration-300 transform hover:scale-105">
+            <i class="fas fa-list text-3xl mb-4"></i>
+            <h3 class="text-xl font-semibold mb-2">Mis Ventas</h3>
+            <p class="text-green-100">Revisar historial de ventas</p>
+        </a>
+        
+        <a href="/vendedor/comisiones" class="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 rounded-lg p-6 text-center transition-all duration-300 transform hover:scale-105">
+            <i class="fas fa-coins text-3xl mb-4"></i>
+            <h3 class="text-xl font-semibold mb-2">Comisiones</h3>
+            <p class="text-purple-100">Ver ganancias por comisiones</p>
+        </a>
+    </div>
+
+    <!-- Rifas destacadas -->
+    <div class="bg-slate-800 rounded-lg p-6 border border-slate-700">
+        <h2 class="text-xl font-semibold mb-4 text-blue-400">
+            <i class="fas fa-star mr-2"></i>
+            Rifas Más Vendidas
+        </h2>
+        <div id="rifas-destacadas" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Se llenarán por JavaScript -->
+        </div>
+    </div>
+</div>
+
+<script>
+// Configurar Socket.IO
+const socket = io();
+
+// Unirse a la sala de vendedor
+socket.emit('join-role', 'vendedor');
+
+// Escuchar actualizaciones en tiempo real
+socket.on('vendedor:nueva-venta', (data) => {
+    console.log('Nueva venta registrada:', data);
+    actualizarEstadisticas();
+    mostrarNotificacion('success', '¡Nueva venta registrada!');
+});
+
+socket.on('supervisor:nueva-rifa', (data) => {
+    console.log('Nueva rifa disponible:', data);
+    mostrarNotificacion('info', `Nueva rifa disponible: ${data.rifa.titulo}`);
+    cargarRifasDestacadas();
+});
+
+// Cargar estadísticas al inicio
+document.addEventListener('DOMContentLoaded', function() {
+    actualizarEstadisticas();
+    cargarRifasDestacadas();
+});
+
+// Función para actualizar estadísticas
+async function actualizarEstadisticas() {
+    try {
+        const response = await fetch('/vendedor/api/mis-ventas');
+        const data = await response.json();
+        
+        if (data.success) {
+            const resumen = data.data.resumen;
+            document.getElementById('ventas-hoy').textContent = resumen.ventas_hoy;
+            document.getElementById('comision-hoy').textContent = `$${resumen.total_comisiones.toFixed(2)}`;
+            document.getElementById('boletos-vendidos').textContent = resumen.total_boletos;
+        }
+    } catch (error) {
+        console.error('Error cargando estadísticas:', error);
+    }
+}
+
+// Función para cargar rifas destacadas
+async function cargarRifasDestacadas() {
+    try {
+        const response = await fetch('/vendedor/api/rifas');
+        const data = await response.json();
+        
+        if (data.success) {
+            const container = document.getElementById('rifas-destacadas');
+            container.innerHTML = '';
+            
+            data.data.slice(0, 2).forEach(rifa => {
+                const porcentajeVendido = (rifa.vendidos / rifa.total_boletos * 100).toFixed(1);
+                
+                container.innerHTML += `
+                    <div class="bg-slate-700 rounded-lg p-4 border border-slate-600">
+                        <h3 class="font-semibold text-lg mb-2">${rifa.titulo}</h3>
+                        <p class="text-slate-300 text-sm mb-3">${rifa.descripcion}</p>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-green-400 font-semibold">$${rifa.precio_boleto}/boleto</span>
+                            <span class="text-blue-400">Comisión: $${rifa.comision}</span>
+                        </div>
+                        <div class="w-full bg-slate-600 rounded-full h-2 mb-2">
+                            <div class="bg-gradient-to-r from-green-400 to-blue-400 h-2 rounded-full" style="width: ${porcentajeVendido}%"></div>
+                        </div>
+                        <div class="flex justify-between text-sm text-slate-400">
+                            <span>${rifa.vendidos}/${rifa.total_boletos} vendidos</span>
+                            <span>${porcentajeVendido}%</span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+    } catch (error) {
+        console.error('Error cargando rifas destacadas:', error);
+    }
+}
+
+// Función para mostrar notificaciones
+function mostrarNotificacion(tipo, mensaje) {
+    // Crear elemento de notificación
+    const notificacion = document.createElement('div');
+    notificacion.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 transition-all duration-300 transform translate-x-full`;
+    
+    const colores = {
+        success: 'bg-green-600 text-white',
+        error: 'bg-red-600 text-white',
+        info: 'bg-blue-600 text-white'
+    };
+    
+    notificacion.className += ` ${colores[tipo]}`;
+    notificacion.innerHTML = `
+        <div class="flex items-center">
+            <i class="fas fa-${tipo === 'success' ? 'check' : tipo === 'error' ? 'times' : 'info'}-circle mr-2"></i>
+            <span>${mensaje}</span>
+        </div>
+    `;
+    
+    document.body.appendChild(notificacion);
+    
+    // Mostrar notificación
+    setTimeout(() => {
+        notificacion.classList.remove('translate-x-full');
+    }, 100);
+    
+    // Ocultar después de 3 segundos
+    setTimeout(() => {
+        notificacion.classList.add('translate-x-full');
+        setTimeout(() => {
+            document.body.removeChild(notificacion);
+        }, 300);
+    }, 3000);
+}
+</script>

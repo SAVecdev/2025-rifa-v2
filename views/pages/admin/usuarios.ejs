@@ -1,0 +1,133 @@
+<!-- Vista de usuarios para administrador -->
+<div id="admin-usuarios" class="min-h-screen bg-slate-900 text-white p-4">
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-red-400 mb-2">Gestión de Usuarios</h1>
+        <p class="text-slate-300">Administra todos los usuarios del sistema</p>
+    </div>
+
+    <!-- Botón para crear nuevo usuario -->
+    <div class="mb-6">
+        <button id="btn-nuevo-usuario" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200">
+            <i class="fas fa-plus mr-2"></i>
+            Nuevo Usuario
+        </button>
+    </div>
+
+    <!-- Tabla de usuarios -->
+    <div class="bg-slate-800 rounded-lg border border-slate-700 overflow-hidden">
+        <div class="p-6">
+            <h2 class="text-xl font-semibold mb-4 text-red-400">Lista de Usuarios</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-slate-600">
+                            <th class="text-left py-3 px-4 text-slate-300">ID</th>
+                            <th class="text-left py-3 px-4 text-slate-300">Nombre</th>
+                            <th class="text-left py-3 px-4 text-slate-300">Email</th>
+                            <th class="text-left py-3 px-4 text-slate-300">Rol</th>
+                            <th class="text-left py-3 px-4 text-slate-300">Estado</th>
+                            <th class="text-left py-3 px-4 text-slate-300">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-usuarios">
+                        <!-- Se llenará por JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Configurar Socket.IO
+const socket = io();
+
+// Unirse a la sala de administrador
+socket.emit('join-role', 'administrador');
+
+// Cargar usuarios al inicio
+document.addEventListener('DOMContentLoaded', function() {
+    cargarUsuarios();
+});
+
+// Función para cargar usuarios
+async function cargarUsuarios() {
+    try {
+        const response = await fetch('/admin/api/usuarios');
+        const data = await response.json();
+        
+        if (data.success) {
+            mostrarUsuarios(data.data);
+        } else {
+            console.error('Error cargando usuarios:', data.message);
+        }
+    } catch (error) {
+        console.error('Error cargando usuarios:', error);
+        // Mostrar datos de ejemplo si falla la API
+        mostrarUsuarios([
+            { id: 1, name: 'Admin User', email: 'admin@rifas.com', role: 'administrador', status: 'activo' },
+            { id: 2, name: 'Juan Supervisor', email: 'juan@rifas.com', role: 'supervisor', status: 'activo' },
+            { id: 3, name: 'María Vendedora', email: 'maria@rifas.com', role: 'vendedor', status: 'activo' }
+        ]);
+    }
+}
+
+// Función para mostrar usuarios en la tabla
+function mostrarUsuarios(usuarios) {
+    const tbody = document.getElementById('tabla-usuarios');
+    tbody.innerHTML = '';
+    
+    usuarios.forEach(usuario => {
+        const estadoColor = usuario.status === 'activo' ? 'text-green-400' : 'text-red-400';
+        const rolColor = {
+            'administrador': 'text-red-400',
+            'supervisor': 'text-blue-400',
+            'vendedor': 'text-green-400'
+        }[usuario.role] || 'text-gray-400';
+        
+        tbody.innerHTML += `
+            <tr class="border-b border-slate-700 hover:bg-slate-700">
+                <td class="py-3 px-4">${usuario.id}</td>
+                <td class="py-3 px-4 font-medium">${usuario.name}</td>
+                <td class="py-3 px-4">${usuario.email}</td>
+                <td class="py-3 px-4 ${rolColor} font-semibold">${usuario.role}</td>
+                <td class="py-3 px-4 ${estadoColor}">${usuario.status}</td>
+                <td class="py-3 px-4">
+                    <button onclick="editarUsuario(${usuario.id})" class="text-blue-400 hover:text-blue-300 mr-3">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button onclick="eliminarUsuario(${usuario.id})" class="text-red-400 hover:text-red-300">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+// Función para editar usuario
+function editarUsuario(id) {
+    console.log('Editar usuario:', id);
+    alert(`Funcionalidad de edición para usuario ${id} (por implementar)`);
+}
+
+// Función para eliminar usuario
+function eliminarUsuario(id) {
+    if (confirm('¿Estás seguro de que quieres eliminar este usuario?')) {
+        console.log('Eliminar usuario:', id);
+        alert(`Usuario ${id} eliminado (por implementar)`);
+    }
+}
+
+// Escuchar eventos de Socket.IO
+socket.on('admin:usuario-creado', (data) => {
+    console.log('Nuevo usuario creado:', data);
+    cargarUsuarios(); // Recargar la lista
+});
+
+socket.on('admin:usuario-actualizado', (data) => {
+    console.log('Usuario actualizado:', data);
+    cargarUsuarios(); // Recargar la lista
+});
+</script>

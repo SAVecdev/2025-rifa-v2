@@ -1,0 +1,349 @@
+<!-- Header de perfil -->
+<section class="bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-900 text-white py-16">
+    <div class="container-custom">
+        <div class="flex flex-col md:flex-row items-center gap-8">
+            <!-- Avatar -->
+            <div class="relative">
+                <div class="w-32 h-32 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-full flex items-center justify-center text-4xl font-bold glow-indigo">
+                    JD
+                </div>
+                <button class="absolute -bottom-2 -right-2 w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center border-2 border-slate-600 hover:bg-slate-600 transition-colors">
+                    <i class="fas fa-camera text-sm text-gray-300"></i>
+                </button>
+            </div>
+            
+            <!-- Información del usuario -->
+            <div class="text-center md:text-left">
+                <h1 class="text-3xl md:text-4xl font-bold mb-2">John Doe</h1>
+                <p class="text-gray-300 text-lg mb-4">john.doe@email.com</p>
+                <div class="flex flex-wrap gap-4 justify-center md:justify-start">
+                    <div class="bg-slate-800/50 px-4 py-2 rounded-lg">
+                        <span class="text-indigo-400 font-semibold">15</span>
+                        <span class="text-gray-300 ml-1">Rifas participadas</span>
+                    </div>
+                    <div class="bg-slate-800/50 px-4 py-2 rounded-lg">
+                        <span class="text-green-400 font-semibold">2</span>
+                        <span class="text-gray-300 ml-1">Premios ganados</span>
+                    </div>
+                    <div class="bg-slate-800/50 px-4 py-2 rounded-lg">
+                        <span class="text-purple-400 font-semibold">$850</span>
+                        <span class="text-gray-300 ml-1">Total invertido</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Navegación del perfil -->
+<section class="bg-slate-800 border-b border-slate-700">
+    <div class="container-custom">
+        <nav class="flex overflow-x-auto">
+            <button class="nav-tab active" data-tab="boletos">
+                <i class="fas fa-ticket-alt mr-2"></i>
+                Mis Boletos
+            </button>
+            <button class="nav-tab" data-tab="premios">
+                <i class="fas fa-trophy mr-2"></i>
+                Premios Ganados
+            </button>
+            <button class="nav-tab" data-tab="historial">
+                <i class="fas fa-history mr-2"></i>
+                Historial
+            </button>
+            <button class="nav-tab" data-tab="configuracion">
+                <i class="fas fa-cog mr-2"></i>
+                Configuración
+            </button>
+        </nav>
+    </div>
+</section>
+
+<!-- Contenido de las pestañas -->
+<section class="section-padding bg-slate-900">
+    <div class="container-custom">
+        
+        <!-- Pestaña: Mis Boletos -->
+        <div class="tab-content active" id="boletos">
+            <h2 class="text-2xl font-bold text-white mb-8">Mis Boletos Activos</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Boleto 1 -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="flex items-start justify-between mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-white">iPhone 15 Pro Max</h3>
+                                <p class="text-gray-400">Rifa #001</p>
+                            </div>
+                            <span class="bg-green-600 text-white px-3 py-1 rounded-full text-sm">Activo</span>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Números:</span>
+                                <span class="text-white font-mono">007, 023, 156</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Sorteo:</span>
+                                <span class="text-white">15 Sep 2025, 8:00 PM</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Invertido:</span>
+                                <span class="text-indigo-400 font-semibold">$150</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 pt-4 border-t border-slate-700">
+                            <div class="flex justify-between text-sm text-gray-400 mb-1">
+                                <span>Progreso del sorteo</span>
+                                <span>65/100</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 65%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Boleto 2 -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="flex items-start justify-between mb-4">
+                            <div>
+                                <h3 class="text-xl font-bold text-white">MacBook Pro M3</h3>
+                                <p class="text-gray-400">Rifa #002</p>
+                            </div>
+                            <span class="bg-green-600 text-white px-3 py-1 rounded-full text-sm">Activo</span>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Números:</span>
+                                <span class="text-white font-mono">042</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Sorteo:</span>
+                                <span class="text-white">20 Sep 2025, 9:00 PM</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Invertido:</span>
+                                <span class="text-indigo-400 font-semibold">$75</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 pt-4 border-t border-slate-700">
+                            <div class="flex justify-between text-sm text-gray-400 mb-1">
+                                <span>Progreso del sorteo</span>
+                                <span>40/100</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 40%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pestaña: Premios Ganados -->
+        <div class="tab-content" id="premios">
+            <h2 class="text-2xl font-bold text-white mb-8">Premios Ganados</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Premio 1 -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-16 h-16 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-full flex items-center justify-center">
+                                <i class="fas fa-trophy text-2xl text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white">PlayStation 4</h3>
+                                <p class="text-gray-400">Ganado el 15 Ago 2025</p>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Número ganador:</span>
+                                <span class="text-green-400 font-mono font-bold">089</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Estado:</span>
+                                <span class="text-green-400">Entregado</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Premio 2 -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
+                                <i class="fas fa-dollar-sign text-2xl text-white"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white">$500 en Efectivo</h3>
+                                <p class="text-gray-400">Ganado el 3 Jul 2025</p>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Número ganador:</span>
+                                <span class="text-green-400 font-mono font-bold">234</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-400">Estado:</span>
+                                <span class="text-green-400">Transferido</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pestaña: Historial -->
+        <div class="tab-content" id="historial">
+            <h2 class="text-2xl font-bold text-white mb-8">Historial de Transacciones</h2>
+            
+            <div class="card">
+                <div class="card-body p-0">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="border-b border-slate-700">
+                                <tr>
+                                    <th class="text-left p-4 text-gray-400 font-medium">Fecha</th>
+                                    <th class="text-left p-4 text-gray-400 font-medium">Rifa</th>
+                                    <th class="text-left p-4 text-gray-400 font-medium">Números</th>
+                                    <th class="text-left p-4 text-gray-400 font-medium">Monto</th>
+                                    <th class="text-left p-4 text-gray-400 font-medium">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-slate-700/50">
+                                    <td class="p-4 text-white">03 Sep 2025</td>
+                                    <td class="p-4 text-white">iPhone 15 Pro Max</td>
+                                    <td class="p-4 text-white font-mono">007, 023, 156</td>
+                                    <td class="p-4 text-indigo-400">$150</td>
+                                    <td class="p-4"><span class="bg-green-600 text-white px-2 py-1 rounded text-sm">Activo</span></td>
+                                </tr>
+                                <tr class="border-b border-slate-700/50">
+                                    <td class="p-4 text-white">01 Sep 2025</td>
+                                    <td class="p-4 text-white">MacBook Pro M3</td>
+                                    <td class="p-4 text-white font-mono">042</td>
+                                    <td class="p-4 text-indigo-400">$75</td>
+                                    <td class="p-4"><span class="bg-green-600 text-white px-2 py-1 rounded text-sm">Activo</span></td>
+                                </tr>
+                                <tr class="border-b border-slate-700/50">
+                                    <td class="p-4 text-white">15 Ago 2025</td>
+                                    <td class="p-4 text-white">PlayStation 4</td>
+                                    <td class="p-4 text-white font-mono">089</td>
+                                    <td class="p-4 text-indigo-400">$45</td>
+                                    <td class="p-4"><span class="bg-yellow-600 text-white px-2 py-1 rounded text-sm">Ganador</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pestaña: Configuración -->
+        <div class="tab-content" id="configuracion">
+            <h2 class="text-2xl font-bold text-white mb-8">Configuración de la Cuenta</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Información personal -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="text-xl font-bold text-white">Información Personal</h3>
+                    </div>
+                    <div class="card-body">
+                        <form class="space-y-4">
+                            <div>
+                                <label class="block text-gray-400 mb-2">Nombre completo</label>
+                                <input type="text" value="John Doe" class="input-field">
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 mb-2">Email</label>
+                                <input type="email" value="john.doe@email.com" class="input-field">
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 mb-2">Teléfono</label>
+                                <input type="tel" value="+1 234 567 8900" class="input-field">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Seguridad -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="text-xl font-bold text-white">Seguridad</h3>
+                    </div>
+                    <div class="card-body">
+                        <form class="space-y-4">
+                            <div>
+                                <label class="block text-gray-400 mb-2">Contraseña actual</label>
+                                <input type="password" class="input-field">
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 mb-2">Nueva contraseña</label>
+                                <input type="password" class="input-field">
+                            </div>
+                            <div>
+                                <label class="block text-gray-400 mb-2">Confirmar contraseña</label>
+                                <input type="password" class="input-field">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Cambiar contraseña</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.nav-tab {
+    @apply px-6 py-4 text-gray-400 hover:text-white transition-colors border-b-2 border-transparent hover:border-indigo-500 whitespace-nowrap;
+}
+
+.nav-tab.active {
+    @apply text-white border-indigo-500;
+}
+
+.tab-content {
+    @apply hidden;
+}
+
+.tab-content.active {
+    @apply block;
+}
+</style>
+
+<script>
+// Funcionalidad de pestañas
+document.addEventListener('DOMContentLoaded', function() {
+    const tabs = document.querySelectorAll('.nav-tab');
+    const contents = document.querySelectorAll('.tab-content');
+    
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            const targetTab = this.dataset.tab;
+            
+            // Remover clase active de todas las pestañas
+            tabs.forEach(t => t.classList.remove('active'));
+            contents.forEach(c => c.classList.remove('active'));
+            
+            // Agregar clase active a la pestaña y contenido seleccionados
+            this.classList.add('active');
+            document.getElementById(targetTab).classList.add('active');
+        });
+    });
+});
+</script>

@@ -1,0 +1,40 @@
+{
+  "name": "rifas-web",
+  "version": "1.0.0",
+  "description": "Aplicación web de rifas con EJS",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "db:init": "node database/init.js",
+    "copy-libs": "copy node_modules\\chart.js\\dist\\chart.umd.min.js public\\js\\chart.min.js",
+    "build-css": "npx tailwindcss -i ./src/input.css -o ./public/output.css",
+    "watch-css": "npx tailwindcss -i ./src/input.css -o ./public/output.css --watch"
+  },
+  "keywords": [
+    "rifas",
+    "ejs",
+    "express",
+    "web"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@material-tailwind/html": "^3.0.0-beta.7",
+    "@tailwindcss/cli": "^4.1.12",
+    "bcryptjs": "^3.0.2",
+    "chart.js": "^4.5.0",
+    "connect-flash": "^0.1.1",
+    "dotenv": "^17.2.2",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-ejs-layouts": "^2.5.1",
+    "express-session": "^1.18.2",
+    "mysql2": "^3.14.4",
+    "socket.io": "^4.8.1",
+    "tailwindcss": "^4.1.12"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

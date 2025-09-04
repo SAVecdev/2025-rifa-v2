@@ -1,0 +1,62 @@
+<!-- Error 404 Section -->
+<section class="section-padding bg-slate-900 min-h-screen flex items-center">
+    <div class="container-custom text-center">
+        <div class="max-w-2xl mx-auto animate-fade-in">
+            <!-- Número 404 grande -->
+            <div class="text-8xl md:text-9xl font-bold gradient-text mb-8">
+                404
+            </div>
+            
+            <!-- Mensaje principal -->
+            <h1 class="text-3xl md:text-5xl font-bold text-white mb-6">
+                ¡Oops! Página no encontrada
+            </h1>
+            
+            <!-- Descripción -->
+            <p class="text-xl text-gray-400 mb-8 leading-relaxed">
+                La página que buscas no existe o ha sido movida. No te preocupes, aquí tienes algunas opciones para continuar.
+            </p>
+            
+            <!-- Icono de error -->
+            <div class="w-24 h-24 bg-gradient-to-br from-indigo-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-8 glow-indigo">
+                <i class="fas fa-exclamation-triangle text-4xl text-white"></i>
+            </div>
+            
+            <!-- Botones de acción -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                <a href="/" class="btn btn-primary btn-large">
+                    <i class="fas fa-home mr-2"></i>
+                    Ir al Inicio
+                </a>
+                <a href="/rifas" class="btn btn-outline btn-large">
+                    <i class="fas fa-ticket-alt mr-2"></i>
+                    Ver Rifas
+                </a>
+                <button onclick="history.back()" class="btn btn-secondary btn-large">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    Volver Atrás
+                </button>
+            </div>
+            
+            <!-- Enlaces útiles -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
+                <a href="/" class="p-4 bg-slate-800 rounded-lg border border-slate-700 hover:border-indigo-500 transition-all duration-300 group">
+                    <i class="fas fa-home text-2xl text-indigo-400 mb-2 group-hover:text-indigo-300"></i>
+                    <div class="text-white font-medium">Inicio</div>
+                </a>
+                <a href="/about" class="p-4 bg-slate-800 rounded-lg border border-slate-700 hover:border-indigo-500 transition-all duration-300 group">
+                    <i class="fas fa-info-circle text-2xl text-indigo-400 mb-2 group-hover:text-indigo-300"></i>
+                    <div class="text-white font-medium">Acerca de</div>
+                </a>
+                <a href="/contact" class="p-4 bg-slate-800 rounded-lg border border-slate-700 hover:border-indigo-500 transition-all duration-300 group">
+                    <i class="fas fa-envelope text-2xl text-indigo-400 mb-2 group-hover:text-indigo-300"></i>
+                    <div class="text-white font-medium">Contacto</div>
+                </a>
+                <a href="/rifas" class="p-4 bg-slate-800 rounded-lg border border-slate-700 hover:border-indigo-500 transition-all duration-300 group">
+                    <i class="fas fa-ticket-alt text-2xl text-indigo-400 mb-2 group-hover:text-indigo-300"></i>
+                    <div class="text-white font-medium">Rifas</div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
